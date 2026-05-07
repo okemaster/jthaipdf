@@ -10,7 +10,7 @@ JThaiPDF is a small Java library that fixes Thai text rendering when generating 
 
 - Build: `mvn package` (output: `target/jthaipdf.jar`)
 - Install to local repo: `mvn install`
-- Tests: there is currently no `src/test` directory. JUnit 4 is declared in `pom.xml` but unused. If adding tests, place them under `src/test/java` and run `mvn test` or `mvn -Dtest=ClassName#method test` for a single test.
+- Tests: JUnit 5 (Jupiter) under `src/test/java`. Run all tests with `mvn test`, or a single test with `mvn -Dtest=ClassName#method test`.
 - Toolchain: JDK 25 (`maven.compiler.release=25`). Source encoding is UTF-8 — required because the codebase contains Thai characters and PUA codepoints (0xF7xx).
 
 ## Architecture
