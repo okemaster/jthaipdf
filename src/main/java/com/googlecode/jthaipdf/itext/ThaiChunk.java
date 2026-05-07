@@ -24,10 +24,8 @@
 package com.googlecode.jthaipdf.itext;
 
 import com.googlecode.jthaipdf.util.ThaiDisplayUtils;
-
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Font;
-
 
 public class ThaiChunk extends Chunk {
 
@@ -40,7 +38,7 @@ public class ThaiChunk extends Chunk {
 		super(content, font);
 		manageContent();
 	}
-	
+
 	public ThaiChunk(char c) {
 		super(c);
 		manageContent();
@@ -50,7 +48,6 @@ public class ThaiChunk extends Chunk {
 		super(ck);
 		manageContent();
 	}
-
 
 	public ThaiChunk(String content) {
 		super(content);

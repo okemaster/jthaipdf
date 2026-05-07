@@ -23,21 +23,19 @@
  */
 package com.googlecode.jthaipdf.jasperreports.engine.export;
 
+import com.googlecode.jthaipdf.util.ThaiDisplayUtils;
 import java.text.AttributedCharacterIterator;
 import java.util.Locale;
 import java.util.Map;
-
 import net.sf.jasperreports.pdf.JRPdfExporter;
 import net.sf.jasperreports.pdf.common.PdfTextChunk;
-
-import com.googlecode.jthaipdf.util.ThaiDisplayUtils;
-
 
 public class ThaiJRPdfExporter extends JRPdfExporter {
 
 	@Override
-	protected PdfTextChunk getChunk(Map<AttributedCharacterIterator.Attribute, Object> attributes,
-			String text, Locale locale) {
+	protected PdfTextChunk getChunk(
+			Map<AttributedCharacterIterator.Attribute, Object> attributes, String text,
+			Locale locale) {
 		return super.getChunk(attributes, ThaiDisplayUtils.toDisplayString(text), locale);
 	}
 }

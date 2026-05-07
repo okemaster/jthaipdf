@@ -23,26 +23,25 @@
  */
 package com.googlecode.jthaipdf.jasperreports.engine;
 
-import java.io.OutputStream;
-
 import com.googlecode.jthaipdf.jasperreports.engine.export.ThaiJRPdfExporter;
-
+import java.io.OutputStream;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 
-
 public class ThaiExporterManager {
 
-	public static void exportReportToPdfFile(JasperPrint jasperPrint, String fileName) throws JRException {
+	public static void exportReportToPdfFile(JasperPrint jasperPrint, String fileName)
+			throws JRException {
 		ThaiJRPdfExporter exporter = new ThaiJRPdfExporter();
 		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
 		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(fileName));
 		exporter.exportReport();
 	}
 
-	public static void exportReportToPdfStream(JasperPrint jasperPrint, OutputStream out) throws JRException {
+	public static void exportReportToPdfStream(JasperPrint jasperPrint, OutputStream out)
+			throws JRException {
 		ThaiJRPdfExporter exporter = new ThaiJRPdfExporter();
 		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
 		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(out));

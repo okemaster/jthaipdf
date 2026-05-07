@@ -23,7 +23,6 @@
  */
 package com.googlecode.jthaipdf.util;
 
-
 public class ThaiDisplayUtils {
 
 	/**
@@ -32,7 +31,7 @@ public class ThaiDisplayUtils {
 	 * @return string for display
 	 */
 	public static String toDisplayString(String value) {
-		return new String(toDisplayString(value.toCharArray())); 
+		return new String(toDisplayString(value.toCharArray()));
 	}
 
 	/**
@@ -54,80 +53,88 @@ public class ThaiDisplayUtils {
 	 * @return string for display
 	 */
 	public static char[] toDisplayString(char[] content) {
-		
+
 		content = explodeSaraAm(content);
 
 		int length = content.length;
-		char pch = 'a'; //previous character start with dummy value
+		char pch = 'a'; // previous character start with dummy value
 
 		// Replace upper and lower character with un-overlapped character
-		for (int i=0; i < length; i++) {
+		for (int i = 0; i < length; i++) {
 			char ch = content[i];
 
 			if (isUpperLevel1(ch) && isUpTail(pch)) { // Level 1 and up-tail
 				content[i] = shiftLeft(ch);
 
-			} else if (isUpperLevel2(ch)) {
+			}
+			else if (isUpperLevel2(ch)) {
 				// Level 2
 				if (isLowerLevel(pch)) {
-					pch = content[i-2];
+					pch = content[i - 2];
 				}
 
 				if (isUpTail(pch)) {
 					content[i] = pullDownAndShiftLeft(ch);
-				} else if (isLeftShiftUpperLevel1(pch)) {
+				}
+				else if (isLeftShiftUpperLevel1(pch)) {
 					content[i] = shiftLeft(ch);
-				} else if (!isUpperLevel1(pch)) {
+				}
+				else if (!isUpperLevel1(pch)) {
 					content[i] = pullDown(ch);
 				}
 
-			} else if (isLowerLevel(ch) && isDownTail(pch)) { // Lower level and down-tail
-				char cutch = cutTail(pch); 
+			}
+			else if (isLowerLevel(ch) && isDownTail(pch)) { // Lower level and down-tail
+				char cutch = cutTail(pch);
 				if (pch != cutch) {
-					content[i-1] =cutch;
-				} else {
+					content[i - 1] = cutch;
+				}
+				else {
 					content[i] = pullDown(ch);
 				}
 			}
 			pch = content[i];
 		}
-		
+
 		return content;
 	}
 
 	private static char[] explodeSaraAm(char[] content) {
 		int count = countSaraAm(content);
-		
+
 		if (count == 0) {
 			return content.clone();
 		}
-		
-		
-		char[] newContent = new char[content.length + count]; // other chars length + 2*(SARA_AM length)
+
+		char[] newContent = new char[content.length + count]; // other chars length +
+																// 2*(SARA_AM length)
 
 		int j = 0;
 
 		// Exploded SARA_AM to NIKHAHIT + SARA_AA
-		for (int i=0; i < content.length; i++) { 
+		for (int i = 0; i < content.length; i++) {
 			char ch = content[i];
-			if (i < content.length - 1  && content[i + 1] == SARA_AM) {
+			if (i < content.length - 1 && content[i + 1] == SARA_AM) {
 				if (isUpperLevel2(ch)) {
 					newContent[j++] = NIKHAHIT;
 					newContent[j++] = ch;
-				} else {
+				}
+				else {
 					newContent[j++] = ch;
 					newContent[j++] = NIKHAHIT;
 				}
-			} else if (ch == SARA_AM){
-				newContent[j++] =SARA_AA;
-			} else {
+			}
+			else if (ch == SARA_AM) {
+				newContent[j++] = SARA_AA;
+			}
+			else {
 				newContent[j++] = ch;
 			}
 		}
-		
+
 		return newContent;
 	}
-	
+
 	private static int countSaraAm(char[] content) {
 		int count = 0;
 		for (int i = 0; i < content.length; i++) {
@@ -138,33 +145,31 @@ public class ThaiDisplayUtils {
 		return count;
 	}
 
-
 	private static boolean isUpTail(char ch) {
 
 		return ch == PO_PLA || ch == FO_FA || ch == FO_FAN || ch == LO_CHULA;
 	}
-	
+
 	private static boolean isDownTail(char ch) {
-		return ch == THO_THAN || ch == YO_YING || ch == DO_CHADA 
-				|| ch == TO_PATAK || ch == RU || ch == LU;
+		return ch == THO_THAN || ch == YO_YING || ch == DO_CHADA || ch == TO_PATAK
+				|| ch == RU || ch == LU;
 	}
 
 	private static boolean isUpperLevel1(char ch) {
-		return ch == MAI_HAN_AKAT || ch == SARA_I || ch == SARA_Ii
-				|| ch == SARA_Ue || ch == SARA_Uee || ch == MAI_TAI_KHU
-				|| ch == NIKHAHIT;
+		return ch == MAI_HAN_AKAT || ch == SARA_I || ch == SARA_Ii || ch == SARA_Ue
+				|| ch == SARA_Uee || ch == MAI_TAI_KHU || ch == NIKHAHIT;
 	}
 
 	private static boolean isLeftShiftUpperLevel1(char ch) {
-		return ch == MAI_HAN_AKAT_LEFT_SHIFT || ch == SARA_I_LEFT_SHIFT || ch == SARA_Ii_LEFT_SHIFT
-		|| ch == SARA_Ue_LEFT_SHIFT || ch == SARA_Uee_LEFT_SHIFT || ch == MAI_TAI_KHU_LEFT_SHIFT
-		|| ch == NIKHAHIT_LEFT_SHIFT;
+		return ch == MAI_HAN_AKAT_LEFT_SHIFT || ch == SARA_I_LEFT_SHIFT
+				|| ch == SARA_Ii_LEFT_SHIFT || ch == SARA_Ue_LEFT_SHIFT
+				|| ch == SARA_Uee_LEFT_SHIFT || ch == MAI_TAI_KHU_LEFT_SHIFT
+				|| ch == NIKHAHIT_LEFT_SHIFT;
 	}
 
-	
 	private static boolean isUpperLevel2(char ch) {
-		return ch == MAI_EK	|| ch == MAI_THO || ch == MAI_TRI
-				|| ch == MAI_CHATTAWA || ch == THANTHAKHAT;
+		return ch == MAI_EK || ch == MAI_THO || ch == MAI_TRI || ch == MAI_CHATTAWA
+				|| ch == THANTHAKHAT;
 	}
 
 	public static boolean isLowerLevel(char ch) {
@@ -218,6 +223,7 @@ public class ThaiDisplayUtils {
 			return ch;
 		}
 	}
+
 	private static char pullDown(char ch) {
 		switch (ch) {
 		case MAI_EK:
@@ -240,10 +246,9 @@ public class ThaiDisplayUtils {
 			return ch;
 		}
 	}
-	
-	
+
 	private static char cutTail(char ch) {
-		switch(ch) {
+		switch (ch) {
 		case THO_THAN:
 			return THO_THAN_CUT_TAIL;
 		case YO_YING:
@@ -251,13 +256,13 @@ public class ThaiDisplayUtils {
 		default:
 			return ch;
 		}
-	}	
+	}
 
 	// Lower level characters
 	public static final char SARA_U = 0xE38;
 	public static final char SARA_UU = 0xE39;
 	public static final char PHINTHU = 0xE3A;
-	
+
 	// Lower level characters after pullDown
 	public static final char SARA_U_DOWN = 0xF718;
 	public static final char SARA_UU_DOWN = 0xF719;
@@ -294,7 +299,7 @@ public class ThaiDisplayUtils {
 	public static final char MAI_TRI_DOWN = 0xF70C;
 	public static final char MAI_CHATTAWA_DOWN = 0xF70D;
 	public static final char THANTHAKHAT_DOWN = 0xF70E;
-	
+
 	// Upper level 2 characters after pull down and shift left
 	public static final char MAI_EK_PULL_DOWN_AND_LEFT_SHIFT = 0xF705;
 	public static final char MAI_THO_PULL_DOWN_AND_LEFT_SHIFT = 0xF706;
@@ -314,7 +319,7 @@ public class ThaiDisplayUtils {
 	public static final char PO_PLA = 0x0E1B;
 	public static final char FO_FA = 0x0E1D;
 	public static final char FO_FAN = 0x0E1F;
-	public static final char LO_CHULA = 0x0E2C;	
+	public static final char LO_CHULA = 0x0E2C;
 
 	// Down tail characters
 	public static final char THO_THAN = 0xE10;
@@ -327,7 +332,7 @@ public class ThaiDisplayUtils {
 	// Cut tail characters
 	public static final char THO_THAN_CUT_TAIL = 0xF700;
 	public static final char YO_YING_CUT_TAIL = 0xF70F;
-	
+
 	// for exploded SARA_AM (NIKHAHIT + SARA_AA)
 	public static final char SARA_AA = 0xE32;
 
